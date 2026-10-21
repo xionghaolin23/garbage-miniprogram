@@ -1,0 +1,120 @@
+<view class="container bottom-space">
+  <view wx:if="{{local}}" class="dev-banner">开发联调 · 模拟支付，不会实际扣款</view>
+  <view class="row address-bar" bindtap="goAddress">
+<view>
+<text class="address-kicker">你家的小事，我们来</text>
+<view class="address-name">{{address ? (community ? community.name : '已登记小区') : '万科翡翠中央'}} <text class="chevron">⌄</text>
+</view>
+<text wx:if="{{address}}" class="muted">{{address.displayText}}</text>
+</view>
+<view class="brand-mark">扔</view>
+</view>
+  <view class="hero">
+<view class="hero-copy">
+<text class="eyebrow">每天，少一件小事</text>
+<view class="hero-title">垃圾放好，<view>其余交给我们。</view>
+</view>
+<view class="hero-sub">定时上门 · 袋装生活垃圾代扔</view>
+</view>
+<view class="bag-art">
+<view class="bag-knot">
+</view>
+<view class="bag-body">
+<view class="bag-smile">⌣</view>
+<view class="bag-label">轻松一点</view>
+</view>
+<view class="bag-shadow">
+</view>
+<text class="spark">✦</text>
+</view>
+</view>
+  <view wx:if="{{!loggedIn}}" class="card intro-card">
+<view class="section-title">从今天开始，把时间留给自己</view>
+<text class="muted">{{catalog ? '单次 ¥' + catalog.singlePriceText + '，月卡 ¥' + catalog.memberPriceText + ' / 30 天。登记地址后即可预约。' : '正在获取服务价格，请稍后刷新。'}}</text>
+<button class="primary" bindtap="login">登录并开始预约</button>
+</view>
+  <block wx:else>
+    <page-state loading="{{loading}}" error="{{error}}" bind:retry="refresh" />
+    <block wx:if="{{!loading && !error}}">
+      <view wx:if="{{!address}}" class="card">
+<view class="section-title">先告诉我们去哪里取</view>
+<text class="muted">一个账号对应一个家庭，地址登记后由客服协助修改。</text>
+<button class="primary setup" bindtap="goAddress">登记家庭地址</button>
+</view>
+      <block wx:else>
+        <view wx:if="{{!community}}" class="notice">该小区暂未开放新预约，已有服务请在订单中查看。</view>
+        <view wx:if="{{member}}" class="member-note row" bindtap="goMember">
+<text>月卡{{member.statusText}} · {{member.expire_date}} 到期</text>
+<text>查看 ›</text>
+</view>
+        <view wx:if="{{memberUsageText}}" class="notice">{{memberUsageText}}</view>
+<view wx:if="{{catalog.promotionActive}}" class="notice">{{catalog.promotionTitle}} · 优惠价格已自动显示</view>
+<view class="section-title row">
+<text>{{dateLabel}}，什么时候取？</text>
+<text class="muted small-text">可同时选择两场</text>
+</view>
+        <view class="date-hint">可预约今天起 7 天 · 每场限 100 户</view>
+        <scroll-view scroll-x class="date-scroll" show-scrollbar="{{false}}">
+          <view class="date-list">
+            <view wx:for="{{dates}}" wx:key="date" class="date-item {{serviceDate === item.date ? 'date-active' : ''}} {{pendingIntent ? 'date-locked' : ''}}" data-date="{{item.date}}" bindtap="chooseDate">
+              <view class="date-label">{{item.label}}</view><view class="date-number">{{item.short}}</view>
+            </view>
+          </view>
+        </scroll-view>
+        <view wx:if="{{dateLoading}}" class="date-hint">正在更新预约人数…</view>
+        <view wx:for="{{slots}}" wx:key="period" class="slot {{item.selected ? 'selected' : ''}} {{item.disabled ? 'disabled' : ''}}" data-period="{{item.period}}" bindtap="choose">
+          <view class="flex">
+<view class="slot-symbol {{item.period === 'NIGHT' ? 'night' : ''}}">{{item.period === 'NOON' ? '☀' : '☾'}}</view>
+<view>
+<view class="slot-title">{{item.title}}</view>
+<text class="muted">{{item.time}}</text>
+<view class="slot-count">已预约 {{item.bookedCount}} / {{item.capacity}} 户</view>
+<view wx:if="{{item.pendingCount}}" class="slot-hold">另有 {{item.pendingCount}} 户待支付占位</view>
+<view class="slot-deadline">{{item.disabled ? item.label : item.deadline + ' 前预约'}}</view>
+</view>
+</view>
+          <view class="slot-right">
+<text class="slot-price">{{item.priceText}}</text>
+<view class="selection-dot">{{item.selected ? '✓' : ''}}</view>
+</view>
+        </view>
+        <view wx:if="{{pendingIntent}}" class="notice">你有一笔 {{pendingDate}} 尚未确认的预约，请继续原预约或到订单中处理。</view>
+        <view class="card remark-card">
+<text class="input-label">给服务人员捎句话 <text class="muted small-text">选填</text>
+</text>
+<input value="{{remark}}" bindinput="inputRemark" maxlength="300" disabled="{{pendingIntent || busy}}" placeholder="例如：放在鞋柜旁，不用敲门" placeholder-class="muted" />
+</view>
+        <checkbox-group bindchange="agree">
+<view class="agreement">
+<label>
+<checkbox value="agree" checked="{{agreement}}" color="#236746" />我已阅读并同意</label>
+<text class="link" catchtap="goRules">《服务规则》</text>
+</view>
+</checkbox-group>
+        <view wx:if="{{today.length}}" class="section-title row">
+<text>{{dateLabel}}的服务</text>
+<text class="link small-text" bindtap="goOrders">全部订单 ›</text>
+</view>
+        <order-card wx:for="{{today}}" wx:key="id" order="{{item}}" bind:open="openOrder" />
+      </block>
+    </block>
+  </block>
+  <view class="membership-teaser row" bindtap="goMember">
+<view>
+<text class="eyebrow">让省心成为日常</text>
+<view class="teaser-title">30 天生活垃圾月卡</view>
+<text class="muted">每天 {{catalog.memberDailyLimit}} 次 · 每天一次的新月卡默认晚上</text>
+</view>
+<view class="teaser-price">{{catalog ? '¥' + catalog.memberPriceText : '—'}}<view class="small-text">了解月卡 ›</view>
+</view>
+</view>
+  <view class="footnote">只代扔袋装日常生活垃圾<view>不含建筑、装修、大件及危险垃圾</view>
+</view>
+</view>
+<view wx:if="{{loggedIn && address && !error && !loading}}" class="bottom-bar row">
+<view>
+<text class="muted small-text">{{pendingIntent ? '继续处理原预约' : (coveredForDate ? '本次月卡权益' : '本次合计')}}</text>
+<view class="price">{{pendingIntent ? '待确认' : '¥' + total}}</view>
+</view>
+<button class="primary" loading="{{busy}}" disabled="{{busy || dateLoading || (!pendingIntent && !selected.length)}}" bindtap="book">{{pendingIntent ? '继续上次预约' : (coveredForDate ? '确认预约' : '立即预约')}}</button>
+</view>

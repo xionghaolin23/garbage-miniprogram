@@ -1,0 +1,41 @@
+<view class="container">
+<view class="title">把每天的小事安排好。</view>
+<view class="subtitle">每天一次的新月卡默认晚上场，可改为中午。</view>
+<page-state loading="{{loading}}" error="{{error}}" bind:retry="refresh" />
+<block wx:if="{{!loading && !error}}">
+<view wx:if="{{!member.canPlan}}" class="card plan-card">
+<view class="section-title">先开通一张月卡</view>
+<text class="muted">固定计划仅适用于有效或待生效的月卡。</text>
+<button class="primary" bindtap="member">查看月卡</button>
+</view>
+<block wx:else>
+<view wx:if="{{member.status === 'PENDING'}}" class="notice plan-card">月卡将于 {{member.start_date}} 生效，你可以先把计划设好。</view>
+<view wx:if="{{member.planDailyLimit === 1}}" class="notice">每天抵扣一次，固定计划只能选择中午或晚上其中一场。第二场可在首页单独购买。</view>
+<view class="card plan-card">
+<view class="menu-row">
+<view>
+<view class="period-title">中午场</view>
+<text class="muted">{{community ? community.noon_start + ' – ' + community.noon_end : '以小区开放时间为准'}}</text>
+</view>
+<switch color="#236746" checked="{{noonEnabled}}" data-field="noonEnabled" bindchange="toggle" />
+</view>
+<view class="menu-row">
+<view>
+<view class="period-title">晚上场</view>
+<text class="muted">{{community ? community.night_start + ' – ' + community.night_end : '以小区开放时间为准'}}</text>
+</view>
+<switch color="#236746" checked="{{nightEnabled}}" data-field="nightEnabled" bindchange="toggle" />
+</view>
+</view>
+<view class="card">
+<text class="input-label first-label">垃圾放置位置</text>
+<input class="input" value="{{placement}}" data-field="placement" bindinput="input" maxlength="120" />
+<text class="input-label">服务备注 <text class="muted small-text">选填</text>
+</text>
+<textarea class="input" value="{{remark}}" data-field="remark" bindinput="input" maxlength="300" placeholder="例如：垃圾放门口，不用敲门" />
+</view>
+<view class="notice">某天某场不用扔？请到该场订单中取消。截止前可以跳过，不退款、不累计；截止后不能取消。固定计划提前预留一周内名额；新增日期满额时会稍后重试，请以订单中的预约记录为准。</view>
+<button class="primary" loading="{{busy}}" disabled="{{busy}}" bindtap="save">保存固定计划</button>
+</block>
+</block>
+</view>

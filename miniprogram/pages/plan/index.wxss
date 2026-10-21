@@ -1,0 +1,1 @@
+.plan-card { margin-top: 32rpx; }.plan-card button { margin-top: 25rpx; }.period-title { font-size: 30rpx; font-weight: 600; margin-bottom: 8rpx; }.first-label { margin-top: 0; }

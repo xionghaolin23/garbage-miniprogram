@@ -1,0 +1,15 @@
+{
+  "name": "garbage-miniprogram",
+  "version": "0.1.0",
+  "private": true,
+  "description": "帮你扔 · 小区垃圾代扔微信小程序",
+  "scripts": {
+    "test": "node --test tests/*.test.js",
+    "check": "node scripts/check.js",
+    "test:integration": "node scripts/integration.js",
+    "check:native": "node scripts/check-native.js"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

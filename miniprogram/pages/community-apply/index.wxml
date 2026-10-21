@@ -1,0 +1,29 @@
+<view class="container apply-page">
+ <view class="title">让服务，来到你的小区。</view>
+ <view class="subtitle">找不到所在小区？留下信息，我们来审核开通。</view>
+ <page-state loading="{{loading}}" error="{{error}}" bind:retry="refresh" />
+ <block wx:if="{{!loading && !error}}">
+  <view class="notice">提交后不会立即入驻。管理员审核通过后，你就能在“我的家庭地址”中选择该小区。</view>
+  <view class="card apply-form">
+   <text class="input-label">小区名称</text><input class="input" value="{{name}}" data-field="name" bindinput="input" maxlength="80" disabled="{{busy || pendingIntent}}" placeholder="例如：万科翡翠中央" />
+   <text class="input-label">所在城市 / 区县</text><input class="input" value="{{city}}" data-field="city" bindinput="input" maxlength="80" disabled="{{busy || pendingIntent}}" placeholder="例如：杭州市余杭区" />
+   <text class="input-label">小区详细地址</text><input class="input" value="{{detailAddress}}" data-field="detailAddress" bindinput="input" maxlength="200" disabled="{{busy || pendingIntent}}" placeholder="街道、路名及门牌号，无需填写个人房号" />
+   <text class="input-label">联系人 <text class="muted small-text">选填</text></text><input class="input" value="{{contactName}}" data-field="contactName" bindinput="input" maxlength="40" disabled="{{busy || pendingIntent}}" placeholder="方便称呼你的名字" />
+   <text class="input-label">联系电话 <text class="muted small-text">选填</text></text><input class="input" value="{{contactPhone}}" data-field="contactPhone" bindinput="input" type="number" maxlength="11" disabled="{{busy || pendingIntent}}" placeholder="仅用于联系确认小区信息" />
+   <text class="input-label">补充说明 <text class="muted small-text">选填</text></text><textarea class="input remark" value="{{remark}}" data-field="remark" bindinput="input" maxlength="300" disabled="{{busy || pendingIntent}}" placeholder="例如：小区出入口位置、希望开通的服务" />
+  </view>
+  <view wx:if="{{pendingIntent}}" class="notice">上次提交尚未确认，可继续原申请，避免重复提交。</view>
+  <button class="primary" bindtap="submit" loading="{{busy}}" disabled="{{busy}}">{{pendingIntent ? '继续确认原申请' : '确认提交申请'}}</button>
+  <view class="support-link" bindtap="support">有其他疑问？联系客服 ›</view>
+  <view class="section-title">我的申请 <text class="muted small-text">下拉刷新审核结果</text></view>
+  <view wx:if="{{!applications.length}}" class="empty muted">还没有提交过入驻申请</view>
+  <view wx:for="{{applications}}" wx:key="id" class="card application">
+   <view class="row"><text class="application-name">{{item.name}}</text><text class="review-status {{item.status}}">{{item.statusText}}</text></view>
+   <view class="muted application-address">{{item.city}} · {{item.detail_address}}</view>
+   <view class="muted small-text">提交于 {{item.createdText}}</view>
+   <view wx:if="{{item.review_reason}}" class="review-reason">审核说明：{{item.review_reason}}</view>
+   <button wx:if="{{item.status === 'APPROVED'}}" class="secondary" bindtap="address">返回选择家庭地址</button>
+  </view>
+  <button wx:if="{{hasMore}}" class="secondary" loading="{{moreLoading}}" disabled="{{moreLoading}}" bindtap="more">加载更多申请</button>
+ </block>
+</view>

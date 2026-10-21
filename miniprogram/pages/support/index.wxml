@@ -1,0 +1,20 @@
+<view class="container">
+<view class="title">我们在这里。</view>
+<view class="subtitle">地址更正、订单疑问，都可以找我们。</view>
+<view class="card support-card">
+<view class="section-title">联系小区运营人员</view>
+<block wx:if="{{phone || wechat}}">
+<button wx:if="{{phone}}" class="primary contact" bindtap="call">拨打 {{phone}}</button>
+<button wx:if="{{wechat}}" class="secondary contact" bindtap="copy">复制客服微信 {{wechat}}</button>
+</block>
+<view wx:else class="notice">客服联系方式尚未开放，请联系邀请你使用本服务的小区运营人员。</view>
+<text class="muted">咨询订单问题时，请一并提供订单号，方便核查。</text>
+</view>
+<view class="card">
+<view class="section-title">地址填错了怎么办？</view>
+<text class="muted">联系客服协助修改。已生成订单保留原地址，请同时说明今天是否已有预约。</text>
+<view class="section-title">这一场不用扔了？</view>
+<text class="muted">在截止时间前进入对应订单，点击取消或“这一场不用扔了”。</text>
+</view>
+<button class="text-button" bindtap="rules">查看完整服务规则</button>
+</view>

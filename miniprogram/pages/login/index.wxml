@@ -1,0 +1,18 @@
+<view class="container login-page">
+<view class="welcome-icon">扔</view>
+<view class="title">生活轻一点，<view>从少跑一趟开始。</view></view>
+<view class="subtitle">把垃圾交给我们，把时间留给自己。</view>
+<view class="card login-card">
+<view class="section-title">{{hasSession ? '欢迎回来' : '登录你的家庭'}}</view>
+<view class="subtitle">已登记家庭直接进入，首次使用再填写取件地址。</view>
+<view wx:if="{{local}}" class="notice">开发测试入口，不获取真实手机号。同一设备会记住测试家庭。</view>
+<checkbox-group wx:if="{{!hasSession}}" bindchange="agree"><view class="agreement"><label><checkbox value="yes" checked="{{agreement}}" color="#236746" />我已阅读并同意</label><text class="link" bindtap="rules">服务规则与隐私说明</text></view></checkbox-group>
+<view wx:if="{{error}}" class="notice">{{error}}</view>
+<view wx:if="{{loginError}}" class="notice">{{loginError}}</view>
+<button wx:if="{{hasSession}}" class="primary" loading="{{busy}}" disabled="{{busy || !!error}}" bindtap="continueLogin">继续进入</button>
+<button wx:elif="{{local}}" class="primary" loading="{{busy}}" disabled="{{busy || !!error}}" bindtap="login">一键进入测试家庭</button>
+<button wx:else class="primary" open-type="getPhoneNumber" bindgetphonenumber="phoneLogin" loading="{{busy}}" disabled="{{busy || !!error || !agreement}}">手机号授权登录</button>
+<view wx:if="{{!local && !hasSession}}" class="hint">手机号用于识别家庭账号，无需填写昵称。</view>
+</view>
+<view class="login-footer">一户一账号 · 固定时段上门 · 取走可查</view>
+</view>

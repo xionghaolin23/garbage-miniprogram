@@ -1,0 +1,7 @@
+.state { text-align: center; padding: 70rpx 30rpx; color: #859080; display: flex; flex-direction: column; align-items: center; font-size: 26rpx; }
+.state-title { font-size: 30rpx; color: #344b3c; font-weight: 600; }
+.state-copy { margin: 20rpx 0; }
+.state button { color: #236746; background: #e8efe3; font-size: 26rpx; border-radius: 16rpx; padding: 0 30rpx; }
+.state button::after { border: none; }
+.dot { width: 20rpx; height: 20rpx; border-radius: 50%; background: #94b092; margin-bottom: 25rpx; }
+.empty-circle { border-radius: 50%; width: 90rpx; height: 90rpx; line-height: 90rpx; background: #eaf0e3; font-size: 40rpx; color: #527349; }

@@ -1,0 +1,44 @@
+<view class="container">
+<view class="profile-header flex">
+<view class="avatar">家</view>
+<view>
+<view class="title">{{loggedIn ? communityName : '生活，轻一点。'}}</view>
+<view class="subtitle">{{address ? address.displayText : '把每天的小事放心交给我们'}}</view>
+</view>
+</view>
+<button wx:if="{{!loggedIn}}" class="primary" bindtap="login">登录我的家庭</button>
+<page-state loading="{{loading}}" error="{{error}}" bind:retry="refresh" />
+<view class="profile-member row" data-page="member" bindtap="go">
+<view>
+<text class="small-text">生活垃圾月卡</text>
+<view class="member-title">{{member ? '月卡' + member.statusText : '让省心成为日常'}}</view>
+<text class="small-text">{{member ? member.expire_date + ' 到期' : (catalog ? '¥' + catalog.memberPriceText + ' / 30 天 · 每天 ' + catalog.memberDailyLimit + ' 次' : '查看当前月卡价格')}}</text>
+</view>
+<text class="member-arrow">↗</text>
+</view>
+<view class="card menu">
+<view class="menu-row" data-page="address" bindtap="go">
+<text>我的家庭地址</text>
+<text class="chevron">›</text>
+</view>
+<view class="menu-row" data-page="member" bindtap="go">
+<text>我的月卡</text>
+<text class="chevron">›</text>
+</view>
+<view class="menu-row" data-page="plan" bindtap="go">
+<text>固定代扔计划</text>
+<text class="chevron">›</text>
+</view>
+<view class="menu-row" data-page="rules" bindtap="go">
+<text>服务规则与隐私说明</text>
+<text class="chevron">›</text>
+</view>
+<view class="menu-row" data-page="support" bindtap="go">
+<text>联系客服</text>
+<text class="chevron">›</text>
+</view>
+</view>
+<button wx:if="{{loggedIn}}" class="text-button" bindtap="logout">退出当前家庭</button>
+<view class="signature">帮你扔<view>少一趟奔波，多一点自己的时间。</view>
+</view>
+</view>

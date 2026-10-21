@@ -1,0 +1,1 @@
+.rules .card { margin-top: 28rpx; }.rules .section-title { margin-top: 32rpx; }.rules .section-title:first-child { margin-top: 0; }.rules .card > text,.paragraph { font-size: 26rpx; color: #728169; line-height: 1.9; }.paragraph { margin-top: 20rpx; }

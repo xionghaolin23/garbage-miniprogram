@@ -1,0 +1,58 @@
+<view class="container">
+<page-state loading="{{loading}}" error="{{error}}" bind:retry="refresh" />
+<block wx:if="{{order && !loading && !error}}">
+<view class="detail-status">
+<view class="status-orb {{order.statusClass}}">{{order.status === 'COMPLETED' ? '✓' : order.status === 'EXCEPTION' ? '!' : '◷'}}</view>
+<view class="title">{{order.statusText}}</view>
+<view class="subtitle">{{order.status === 'WAITING' ? '请在服务开始前，将垃圾放到约定位置' : order.status === 'COMPLETED' ? '这件小事已经办好，安心忙自己的吧' : order.status === 'UNPAID' ? '支付确认后，服务人员才会上门' : order.status === 'CANCELLED' ? '本场服务已取消，退款进度见下方' : '请查看异常原因，或联系客服'}}</view>
+</view>
+<view class="card">
+<view class="row">
+<text class="section-title no-margin">{{order.dateText}} · {{order.periodText}}</text>
+<text class="badge">{{order.isMember ? '月卡服务' : '单次服务'}}</text>
+</view>
+<view class="time-large">{{order.timeText}}</view>
+<view class="muted">{{order.service_date}} · {{order.deadlineText}} 截止预约及取消</view>
+<view class="divider">
+</view>
+<view class="address-title">{{order.community_name}}</view>
+<view>{{order.addressText}}</view>
+<view class="label-value">
+<text>放置位置</text>
+<text>{{order.placement}}</text>
+</view>
+<view class="label-value">
+<text>备注</text>
+<text>{{order.remark || '无'}}</text>
+</view>
+<view class="label-value">
+<text>本场金额</text>
+<text>{{order.isMember ? '月卡权益内使用' : '¥' + order.priceText}}</text>
+</view>
+</view>
+<view wx:if="{{order.exception_reason}}" class="notice">异常原因：{{order.exception_reason}}</view>
+<view wx:if="{{order.completedText}}" class="card">
+<view class="label-value">
+<text>取走时间</text>
+<text>{{order.completedText}}</text>
+</view>
+<image wx:if="{{order.photo_url}}" class="photo" src="{{order.photo_url}}" mode="widthFix" bindtap="preview" />
+<view wx:else class="muted">本次服务未上传照片。</view>
+</view>
+<view wx:for="{{order.refunds}}" wx:key="id" class="card">
+<view class="row">
+<text>{{item.statusText}}</text>
+<text class="green">¥{{item.amountText}}</text>
+</view>
+<text class="muted small-text">退款对应原支付渠道</text>
+</view>
+<view class="card meta">
+<text class="muted small-text" selectable>订单号 {{order.id}}</text>
+</view>
+<button wx:if="{{order.canPay}}" class="primary action" bindtap="pay" loading="{{busy}}" disabled="{{busy}}">继续支付</button>
+<button wx:if="{{order.canCancel}}" class="ghost action" bindtap="cancel" disabled="{{busy}}">{{order.isMember ? '这一场不用扔了' : '取消本场服务'}}</button>
+<view wx:if="{{order.status === 'WAITING' && !order.canCancel}}" class="notice">本场已截止，无法取消。</view>
+<button wx:if="{{canSubscribe && order.status === 'WAITING'}}" class="secondary action" bindtap="subscribe">订阅服务完成提醒</button>
+<button class="text-button" bindtap="support">有疑问？联系客服</button>
+</block>
+</view>

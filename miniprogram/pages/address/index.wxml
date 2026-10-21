@@ -1,0 +1,53 @@
+<view class="container">
+<view class="title">我们去哪里取？</view>
+<view class="subtitle">一个账号，对应一个家庭。</view>
+<page-state loading="{{loading}}" error="{{error}}" bind:retry="refresh" />
+<block wx:if="{{!loading && !error}}">
+<view wx:if="{{address}}" class="card address-detail">
+<view class="community-heading"><text class="badge">家庭地址</text><text class="community-apply-link" bindtap="applyCommunity">小区未入驻？申请开通 ›</text></view>
+<view class="section-title">{{communityName}}</view>
+<view class="title">{{address.displayText}}</view>
+<view class="divider">
+</view>
+<view class="label-value">
+<text>默认放置位置</text>
+<text>{{address.placement}}</text>
+</view>
+<view wx:if="{{address.floor}}" class="label-value"><text>所在楼层</text><text>{{address.floor}}层</text></view>
+<view wx:else><text class="input-label">补充所在楼层</text><input class="input" type="number" value="{{floor}}" data-field="floor" bindinput="input" maxlength="10" placeholder="例如：12" /><button class="primary" bindtap="fillFloor" loading="{{busy}}" disabled="{{busy}}">确认补填楼层</button><text class="muted">仅可自行补填一次，方便按层上门取件。</text></view>
+<text class="muted">已生成订单会保留当时的地址。需要更正地址或搬家，请联系客服。</text>
+<button class="secondary" bindtap="support">联系客服修改</button>
+</view>
+<block wx:else>
+<view class="card address-detail">
+<view class="community-heading"><text class="input-label">所在小区</text><text class="community-apply-link" bindtap="applyCommunity">小区未入驻？申请开通 ›</text></view>
+<picker range="{{names}}" value="{{selectedIndex}}" bindchange="select" disabled="{{!names.length}}">
+<view class="picker row">
+<text>{{selectedIndex >= 0 ? names[selectedIndex] : '请选择已开通服务的小区'}}</text>
+<text class="chevron">⌄</text>
+</view>
+</picker>
+<view wx:if="{{!names.length}}" class="notice">暂时没有开放的小区，可点击右上方提交入驻申请。</view>
+<view class="split">
+<view>
+<text class="input-label">楼栋</text>
+<input class="input" value="{{building}}" data-field="building" bindinput="input" maxlength="30" placeholder="例如：3栋" />
+</view>
+<view>
+<text class="input-label">单元 <text class="muted small-text">选填</text>
+</text>
+<input class="input" value="{{unit}}" data-field="unit" bindinput="input" maxlength="30" placeholder="例如：2单元" />
+</view>
+</view>
+<text class="input-label">所在楼层</text>
+<input class="input" type="number" value="{{floor}}" data-field="floor" bindinput="input" maxlength="10" placeholder="例如：12（请填写实际楼层）" />
+<text class="input-label">房号</text>
+<input class="input" value="{{room}}" data-field="room" bindinput="input" maxlength="30" placeholder="例如：1201" />
+<text class="input-label">默认垃圾放置位置</text>
+<input class="input" value="{{placement}}" data-field="placement" bindinput="input" maxlength="120" placeholder="请填写小区允许的放置位置" />
+</view>
+<view class="notice">请使用准确的家庭地址。登记完成后，需要由客服协助修改。</view>
+<button class="primary" loading="{{busy}}" disabled="{{busy || !names.length}}" bindtap="save">确认家庭地址</button>
+</block>
+</block>
+</view>

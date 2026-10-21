@@ -1,0 +1,6 @@
+<view class="order" bindtap="open" hover-class="pressed">
+  <view class="row"><view class="heading">{{order.dateText}} · {{order.periodText}}</view><text class="status {{order.statusClass}}">{{order.statusText}}</text></view>
+  <view class="time">{{order.timeText}}</view>
+  <view class="address">{{order.community_name}} · {{order.addressText}}</view>
+  <view class="footer"><text class="tag">{{order.isMember ? '月卡服务' : '单次服务'}}</text><text class="amount">{{order.isMember ? '权益内使用' : '¥' + order.priceText}} <text class="arrow">›</text></text></view>
+</view>

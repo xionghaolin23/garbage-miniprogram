@@ -1,0 +1,23 @@
+<view class="container">
+<view class="title">每一袋，都有着落。</view>
+<view class="subtitle">预约进度与服务记录，都在这里。</view>
+<scroll-view scroll-x class="filter-scroll">
+<view class="filters">
+<view wx:for="{{filters}}" wx:key="key" class="filter {{filter === item.key ? 'active' : ''}}" data-filter="{{item.key}}" bindtap="select">{{item.title}}</view>
+</view>
+</scroll-view>
+<view wx:if="{{!loggedIn}}" class="card">
+<text class="muted">登录后查看你的预约与月卡服务。</text>
+<button class="primary login" bindtap="login">登录查看</button>
+</view>
+<block wx:else>
+<page-state loading="{{loading}}" error="{{error}}" bind:retry="refresh" />
+<block wx:if="{{!loading && !error}}">
+<order-card wx:for="{{visible}}" wx:key="id" order="{{item}}" bind:open="openOrder" />
+<page-state empty="{{!visible.length}}" message="{{hasMore ? '已加载的订单中暂无此状态，可继续加载' : '这里还没有订单，下一次交给我们吧'}}" />
+<button wx:if="{{hasMore}}" class="text-button" loading="{{loadingMore}}" bindtap="more">{{loadingMore ? '正在加载' : '加载更多订单'}}</button>
+<button wx:elif="{{!rows.length}}" class="secondary" bindtap="home">去预约一次</button>
+<view wx:else class="end">已经到底了</view>
+</block>
+</block>
+</view>

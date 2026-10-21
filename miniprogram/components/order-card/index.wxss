@@ -1,0 +1,8 @@
+.order { background: #fff; padding: 28rpx; border-radius: 25rpx; margin-bottom: 20rpx; border: 1rpx solid #ebeee7; }
+.row,.footer { display: flex; justify-content: space-between; align-items: center; }
+.heading { font-size: 29rpx; font-weight: 600; color: #294437; }
+.status { font-size: 23rpx; padding: 5rpx 13rpx; border-radius: 9rpx; background: #f2f3ef; color: #8a9186; }
+.waiting { background: #fff1d7; color: #a4762d; }.completed { background: #e8f1e4; color: #397645; }.unpaid,.exception { background: #faece4; color: #a26241; }
+.time { font-size: 27rpx; margin-top: 14rpx; color: #526957; }.address { font-size: 24rpx; color: #83907e; margin-top: 7rpx; }
+.footer { border-top: 1rpx solid #eff1eb; margin-top: 22rpx; padding-top: 19rpx; font-size: 23rpx; color: #7b8c75; }
+.tag { background: #f3f5ee; border-radius: 8rpx; padding: 3rpx 13rpx; }.amount { color: #39543f; }.arrow { margin-left: 18rpx; color: #9aa792; }.pressed { opacity: .7; }

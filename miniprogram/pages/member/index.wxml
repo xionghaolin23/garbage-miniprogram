@@ -1,0 +1,76 @@
+<view class="container bottom-space">
+<view wx:if="{{local}}" class="dev-banner">开发联调 · 模拟开通，不会实际扣款</view>
+<view class="member-hero">
+<text class="member-kicker">帮你扔 · 生活垃圾月卡</text>
+<view class="member-headline">把省心，<view>安排进每一天。</view>
+</view>
+<view class="member-price">¥<text>{{catalog ? catalog.memberPriceText : '—'}}</text>
+<text class="duration"> / 30 天</text>
+</view>
+<view wx:if="{{catalog.memberDiscounted}}" class="member-foot">{{catalog.promotionTitle}} · 原价 ¥{{catalog.memberListPriceText}}</view>
+<view class="member-foot">每天 {{catalog.memberDailyLimit}} 次 · 每天一次的新月卡默认晚上</view>
+<view class="orbit orbit-one">
+</view>
+<view class="orbit orbit-two">
+</view>
+</view>
+<page-state loading="{{loading}}" error="{{error}}" bind:retry="refresh" />
+<block wx:if="{{!loading && !error}}">
+<view wx:if="{{resultText}}" class="notice">{{resultText}}</view>
+<view wx:if="{{member}}" class="card current-member">
+<view class="row">
+<text class="section-title no-margin">我的月卡</text>
+<text class="badge">{{member.statusText}}</text>
+</view>
+<view class="member-dates">{{member.start_date}} — {{member.expire_date}}</view>
+<view wx:for="{{member.terms}}" wx:key="start_date" class="muted small-text">{{item.start_date}} 至 {{item.expire_date}}：每天 {{item.daily_limit}} 次</view>
+<button wx:if="{{member.canPlan}}" class="secondary" bindtap="plan">设置固定代扔计划</button>
+</view>
+<view class="card benefits">
+<view class="benefit">
+<text class="tick">✓</text>
+<view>
+<view>每天，最多 {{catalog.memberDailyLimit}} 次</view>
+<text class="muted">{{catalog.memberDailyLimit === 1 ? '默认晚上场，可改中午；第二场单独付费。' : '中午、晚上各一次，按小区时段上门。'}}</text>
+</view>
+</view>
+<view class="benefit">
+<text class="tick">✓</text>
+<view>
+<view>设置一次，按计划来</view>
+<text class="muted">支持固定计划，不用每天手动预约。</text>
+</view>
+</view>
+<view class="benefit">
+<text class="tick">✓</text>
+<view>
+<view>偶尔不用，提前跳过</view>
+<text class="muted">截止前可取消当天某场，不折现、不累计。</text>
+</view>
+</view>
+</view>
+<view class="card">
+<view class="section-title no-margin">{{pending ? '原购买请求待确认' : '本次购买服务日期'}}</view>
+<view wx:if="{{!pending}}" class="range">{{range.start}}<text> 至 </text>{{range.end}}</view>
+<text class="muted">{{pending ? '继续原购买请求，以支付成功后显示的月卡日期为准。' : '首购或到期重购次日生效；提前续费在现有到期日后接续 30 天。'}}</text>
+<view class="divider">
+</view>
+<view class="muted small-text">月卡绑定当前家庭。购买当日没有生效月卡时，今天的服务仍需单次购买。当前版本不提供退卡流程。</view>
+</view>
+<checkbox-group bindchange="agree">
+<view class="agreement">
+<label>
+<checkbox value="yes" checked="{{agreement}}" color="#236746" />我已阅读并同意</label>
+<text class="link" bindtap="rules">《月卡服务规则》</text>
+</view>
+</checkbox-group>
+</block>
+</view>
+<view wx:if="{{!loading && !error}}" class="bottom-bar row">
+<view>
+<text class="muted small-text">30 个自然日</text>
+<view class="price">¥{{catalog.memberPriceText}}
+</view>
+</view>
+<button class="primary" bindtap="buy" loading="{{busy}}" disabled="{{busy}}">{{!address ? '先登记家庭地址' : pending ? '继续原购买' : member.canPlan ? '续费 30 天' : '开通月卡'}}</button>
+</view>

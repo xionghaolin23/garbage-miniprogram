@@ -1,0 +1,49 @@
+{
+  "pages": [
+    "pages/home/index",
+    "pages/orders/index",
+    "pages/profile/index",
+    "pages/login/index",
+    "pages/address/index",
+    "pages/order-detail/index",
+    "pages/member/index",
+    "pages/plan/index",
+    "pages/rules/index",
+    "pages/support/index",
+    "pages/community-apply/index"
+  ],
+  "window": {
+    "navigationBarBackgroundColor": "#F7F8F2",
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "帮你扔",
+    "backgroundColor": "#F7F8F2",
+    "backgroundTextStyle": "dark"
+  },
+  "tabBar": {
+    "color": "#7B837A",
+    "selectedColor": "#236746",
+    "backgroundColor": "#FFFFFF",
+    "borderStyle": "white",
+    "list": [
+      {
+        "pagePath": "pages/home/index",
+        "text": "首页"
+      },
+      {
+        "pagePath": "pages/orders/index",
+        "text": "订单"
+      },
+      {
+        "pagePath": "pages/profile/index",
+        "text": "我的"
+      }
+    ]
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json",
+  "usingComponents": {
+    "order-card": "/components/order-card/index",
+    "page-state": "/components/page-state/index"
+  },
+  "lazyCodeLoading": "requiredComponents"
+}
